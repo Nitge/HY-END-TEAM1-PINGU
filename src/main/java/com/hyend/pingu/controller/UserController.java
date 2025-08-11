@@ -1,5 +1,7 @@
 package com.hyend.pingu.controller;
 
+import com.hyend.pingu.dto.PostResponseDTO;
+import com.hyend.pingu.entity.PostEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
