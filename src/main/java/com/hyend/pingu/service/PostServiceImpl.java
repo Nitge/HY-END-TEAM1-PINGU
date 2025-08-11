@@ -1,5 +1,7 @@
 package com.hyend.pingu.service;
 
+import com.hyend.pingu.dto.PageRequestDTO;
+import com.hyend.pingu.dto.PageResultDTO;
 import com.hyend.pingu.dto.PostRequestDTO;
 import com.hyend.pingu.dto.PostResponseDTO;
 import com.hyend.pingu.entity.FileEntity;
@@ -12,6 +14,7 @@ import com.hyend.pingu.util.FileStoreUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -27,10 +30,18 @@ public class PostServiceImpl implements PostService{
     private final FileStoreUtil fileStoreUtil;
 
     @Override
-    public Page<PostResponseDTO> getPosts(Pageable pageable) {
-        return postRepository
-                .findAll(pageable)
-                .map(postEntity -> postMapper.entityToDto(postEntity));
+    public PageResultDTO<PostResponseDTO, PostEntity> getPosts(Long userId, PageRequestDTO pageRequestDTO) {
+
+        Pageable pageable = pageRequestDTO.getPageable(Sort.by("createdAt").descending());
+        Page<PostEntity> postEntities;
+
+        if(userId != null) {
+            postEntities = postRepository.findAllByUserId(userId, pageable);
+        } else {
+            postEntities = postRepository.findAll(pageable);
+        }
+
+        return new PageResultDTO<>(postEntities, postMapper::entityToDto);
     }
 
     @Override
