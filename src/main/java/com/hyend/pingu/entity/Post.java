@@ -14,16 +14,14 @@ import java.util.List;
 @Getter
 @ToString
 @Entity
-@Table(name = "post")
-public class PostEntity extends BaseEntity{
+public class Post extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postId;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    private User user;
 
     private String title;
 
@@ -41,7 +39,7 @@ public class PostEntity extends BaseEntity{
     private Scope scope;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FileEntity> files = new ArrayList<>();
+    private List<File> files = new ArrayList<>();
 
     public void changeTitle(String title) {
         this.title = title;
@@ -55,11 +53,11 @@ public class PostEntity extends BaseEntity{
         this.scope = scope;
     }
 
-    public void changeFiles(List<FileEntity> files) {
+    public void changeFiles(List<File> files) {
         this.files.clear();
-        files.forEach(fileEntity -> {
-            fileEntity.setPost(this);
-            this.files.add(fileEntity);
+        files.forEach(file -> {
+            file.setPost(this);
+            this.files.add(file);
         });
     }
 

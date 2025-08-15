@@ -4,9 +4,9 @@ import com.hyend.pingu.dto.PageRequestDTO;
 import com.hyend.pingu.dto.PageResultDTO;
 import com.hyend.pingu.dto.PostRequestDTO;
 import com.hyend.pingu.dto.PostResponseDTO;
-import com.hyend.pingu.entity.FileEntity;
+import com.hyend.pingu.entity.File;
 import com.hyend.pingu.entity.FileInfo;
-import com.hyend.pingu.entity.PostEntity;
+import com.hyend.pingu.entity.Post;
 import com.hyend.pingu.enumeration.Scope;
 import com.hyend.pingu.mapper.PostMapper;
 import com.hyend.pingu.repository.PostRepository;
@@ -30,10 +30,10 @@ public class PostServiceImpl implements PostService{
     private final FileStoreUtil fileStoreUtil;
 
     @Override
-    public PageResultDTO<PostResponseDTO, PostEntity> getPosts(Long userId, PageRequestDTO pageRequestDTO) {
+    public PageResultDTO<PostResponseDTO, Post> getPosts(Long userId, PageRequestDTO pageRequestDTO) {
 
         Pageable pageable = pageRequestDTO.getPageable(Sort.by("createdAt").descending());
-        Page<PostEntity> postEntities;
+        Page<Post> postEntities;
 
         if(userId != null) {
             postEntities = postRepository.findAllByUserId(userId, pageable);
@@ -47,51 +47,51 @@ public class PostServiceImpl implements PostService{
     @Override
     public Long register(PostRequestDTO postRequestDTO) throws IOException {
 
-        PostEntity postEntity = postMapper.dtoToEntity(postRequestDTO);
+        Post post = postMapper.dtoToEntity(postRequestDTO);
 
-        return setFilesAndSave(postRequestDTO, postEntity);
+        return setFilesAndSave(postRequestDTO, post);
     }
 
     @Override
     public Long modify(PostRequestDTO postRequestDTO) throws IOException {
 
-        PostEntity postEntity = postRepository.findById(postRequestDTO.getPostId())
+        Post post = postRepository.findById(postRequestDTO.getPostId())
                 .orElseThrow(() -> new RuntimeException("해당 ID를 가진 Entity가 없습니다."));
 
-        postEntity.changeTitle(postRequestDTO.getTitle());
-        postEntity.changeContent(postRequestDTO.getContent());
-        postEntity.changeScope(Scope.valueOf(postRequestDTO.getScope()));
+        post.changeTitle(postRequestDTO.getTitle());
+        post.changeContent(postRequestDTO.getContent());
+        post.changeScope(Scope.valueOf(postRequestDTO.getScope()));
 
-        return setFilesAndSave(postRequestDTO, postEntity);
+        return setFilesAndSave(postRequestDTO, post);
     }
 
     @Override
     public Long delete(Long postId) {
 
-        PostEntity postEntity = postRepository.findById(postId)
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("해당 ID를 가진 Entity가 없습니다."));
 
-        postEntity.changeScope(Scope.DELETED);
+        post.changeScope(Scope.DELETED);
 
         return postId;
     }
 
-    private Long setFilesAndSave(PostRequestDTO postRequestDTO, PostEntity postEntity) throws IOException {
+    private Long setFilesAndSave(PostRequestDTO postRequestDTO, Post post) throws IOException {
 
         List<FileInfo> fileInfos = fileStoreUtil.storeFiles(postRequestDTO.getFiles());
 
-        List<FileEntity> fileEntities = fileInfos.stream().map(
-                        fileInfo -> FileEntity.builder()
-                                .post(postEntity)
+        List<File> fileEntities = fileInfos.stream().map(
+                        fileInfo -> File.builder()
+                                .post(post)
                                 .fileInfo(fileInfo)
                                 .build()
                 )
                 .toList();
 
-        postEntity.changeFiles(fileEntities);
+        post.changeFiles(fileEntities);
 
-        postRepository.save(postEntity);
+        postRepository.save(post);
 
-        return postEntity.getPostId();
+        return post.getId();
     }
 }

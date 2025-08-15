@@ -1,7 +1,5 @@
 package com.hyend.pingu.controller;
 
-import com.hyend.pingu.dto.PostResponseDTO;
-import com.hyend.pingu.entity.PostEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 import com.hyend.pingu.dto.PageRequestDTO;
 import com.hyend.pingu.dto.PageResultDTO;
 import com.hyend.pingu.dto.user.UserDTO;
-import com.hyend.pingu.entity.UserEntity;
+import com.hyend.pingu.entity.User;
 import com.hyend.pingu.service.UserService;
 
 @RestController
@@ -30,8 +28,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<PageResultDTO<UserDTO, UserEntity>> getList(PageRequestDTO pageRequestDTO) {
-        PageResultDTO<UserDTO, UserEntity> result = userService.getList(pageRequestDTO);
+    public ResponseEntity<PageResultDTO<UserDTO, User>> getList(PageRequestDTO pageRequestDTO) {
+        PageResultDTO<UserDTO, User> result = userService.getList(pageRequestDTO);
         return ResponseEntity.ok(result);
     }
 

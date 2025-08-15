@@ -4,7 +4,7 @@ import com.hyend.pingu.dto.PageRequestDTO;
 import com.hyend.pingu.dto.PageResultDTO;
 import com.hyend.pingu.dto.PostRequestDTO;
 import com.hyend.pingu.dto.PostResponseDTO;
-import com.hyend.pingu.entity.PostEntity;
+import com.hyend.pingu.entity.Post;
 import com.hyend.pingu.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public ResponseEntity<PageResultDTO<PostResponseDTO, PostEntity>> getPosts(
+    public ResponseEntity<PageResultDTO<PostResponseDTO, Post>> getPosts(
             @RequestParam(required = false) Long userId,
             PageRequestDTO pageRequestDTO) {
 

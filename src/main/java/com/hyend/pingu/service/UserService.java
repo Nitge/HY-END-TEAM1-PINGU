@@ -3,7 +3,7 @@ package com.hyend.pingu.service;
 import com.hyend.pingu.dto.PageRequestDTO;
 import com.hyend.pingu.dto.PageResultDTO;
 import com.hyend.pingu.dto.user.UserDTO;
-import com.hyend.pingu.entity.UserEntity;
+import com.hyend.pingu.entity.User;
 
 public interface UserService {
     Long create(UserDTO userDTO);
@@ -11,5 +11,5 @@ public interface UserService {
     void update(UserDTO userDTO);
     void delete(Long userId);
 
-    PageResultDTO<UserDTO, UserEntity> getList(PageRequestDTO requestDTO);
+    PageResultDTO<UserDTO, User> getList(PageRequestDTO requestDTO);
 }
