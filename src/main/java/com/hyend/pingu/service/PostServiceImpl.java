@@ -54,14 +54,26 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public Long modify(PostRequestDTO postRequestDTO) throws IOException {
-
+    
         Post post = postRepository.findById(postRequestDTO.getPostId())
                 .orElseThrow(() -> new RuntimeException("해당 ID를 가진 Entity가 없습니다."));
-
-        post.changeTitle(postRequestDTO.getTitle());
-        post.changeContent(postRequestDTO.getContent());
-        post.changeScope(Scope.valueOf(postRequestDTO.getScope()));
-
+    
+        if (postRequestDTO.getTitle() != null) {
+            post.changeTitle(postRequestDTO.getTitle());
+        }
+        if (postRequestDTO.getContent() != null) {
+            post.changeContent(postRequestDTO.getContent());
+        }
+        if (postRequestDTO.getScope() != null && !postRequestDTO.getScope().isBlank()) {
+            post.changeScope(Scope.valueOf(postRequestDTO.getScope()));
+        }
+        if (postRequestDTO.getLatitude() != null) {
+            post.changeLatitude(postRequestDTO.getLatitude());
+        }
+        if (postRequestDTO.getLongitude() != null) {
+            post.changeLongitude(postRequestDTO.getLongitude());
+        }
+        
         return setFilesAndSave(postRequestDTO, post);
     }
 
@@ -72,26 +84,43 @@ public class PostServiceImpl implements PostService{
                 .orElseThrow(() -> new RuntimeException("해당 ID를 가진 Entity가 없습니다."));
 
         post.changeScope(Scope.DELETED);
+        postRepository.save(post);
 
         return postId;
     }
 
+    @Override
+    public PostResponseDTO getPost(Long postId, boolean count) {
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("해당 ID를 가진 Entity가 없습니다."));
+        
+        if(count) {
+            post.increaseViewCount();
+            postRepository.save(post);
+        }
+
+        return postMapper.entityToDto(post);
+
+    }
+
     private Long setFilesAndSave(PostRequestDTO postRequestDTO, Post post) throws IOException {
 
-        List<FileInfo> fileInfos = fileStoreUtil.storeFiles(postRequestDTO.getFiles());
-
-        List<File> fileEntities = fileInfos.stream().map(
-                        fileInfo -> File.builder()
-                                .post(post)
-                                .fileInfo(fileInfo)
-                                .build()
-                )
-                .toList();
-
-        post.changeFiles(fileEntities);
-
+        if (postRequestDTO.getFiles() != null && !postRequestDTO.getFiles().isEmpty()) {
+            List<FileInfo> fileInfos = fileStoreUtil.storeFiles(postRequestDTO.getFiles());
+    
+            List<File> fileEntities = fileInfos.stream().map(
+                            fileInfo -> File.builder()
+                                    .post(post)
+                                    .fileInfo(fileInfo)
+                                    .build()
+                    )
+                    .toList();
+    
+            post.changeFiles(fileEntities);
+        }
+    
         postRepository.save(post);
-
         return post.getId();
     }
 }

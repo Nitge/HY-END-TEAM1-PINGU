@@ -1,13 +1,16 @@
 package com.hyend.pingu.dto;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Getter
-@Builder
+@Setter
+@NoArgsConstructor
 public class PostRequestDTO {
 
     private Long postId;

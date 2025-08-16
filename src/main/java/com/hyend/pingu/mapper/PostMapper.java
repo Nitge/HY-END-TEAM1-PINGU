@@ -23,15 +23,20 @@ public class PostMapper {
                 .id(postRequestDTO.getUserId())
                 .build();
 
+        float lat = postRequestDTO.getLatitude() == null ? 0 : postRequestDTO.getLatitude();
+        float lon = postRequestDTO.getLongitude() == null ? 0 : postRequestDTO.getLongitude();
+        Scope scope = postRequestDTO.getScope() == null ? Scope.PUBLIC : Scope.valueOf(postRequestDTO.getScope());
+        
+
         Post post = Post.builder()
                 .user(user)
                 .title(postRequestDTO.getTitle())
                 .content(postRequestDTO.getContent())
                 .likeCount(0)
                 .viewCount(0)
-                .latitude(postRequestDTO.getLatitude())
-                .longitude(postRequestDTO.getLongitude())
-                .scope(Scope.valueOf(postRequestDTO.getScope()))
+                .latitude(lat)
+                .longitude(lon)
+                .scope(scope)
                 .build();
 
         return post;

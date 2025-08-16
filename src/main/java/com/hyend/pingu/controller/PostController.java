@@ -50,4 +50,13 @@ public class PostController {
 
         return ResponseEntity.ok(deletedPostId);
     }
+
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostResponseDTO> getPost(@PathVariable Long postId,
+                                                   @RequestParam(defaultValue = "true") boolean count) {
+    
+        PostResponseDTO postResponseDTO = postService.getPost(postId, count);
+    
+        return ResponseEntity.ok(postResponseDTO);
+    }
 }
