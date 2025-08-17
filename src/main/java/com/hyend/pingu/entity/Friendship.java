@@ -27,4 +27,8 @@ public class Friendship extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    public void changeStatus(Status status) {
+        this.status = status;
+}
 }
