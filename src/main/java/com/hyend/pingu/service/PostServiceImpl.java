@@ -12,6 +12,9 @@ import com.hyend.pingu.mapper.PostMapper;
 import com.hyend.pingu.repository.PostRepository;
 import com.hyend.pingu.util.FileStoreUtil;
 import lombok.RequiredArgsConstructor;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,6 +31,7 @@ public class PostServiceImpl implements PostService{
     private final PostRepository postRepository;
     private final PostMapper postMapper;
     private final FileStoreUtil fileStoreUtil;
+    private final GeometryFactory geometryFactory;
 
     @Override
     public PageResultDTO<PostResponseDTO, Post> getPosts(Long userId, PageRequestDTO pageRequestDTO) {
@@ -42,6 +46,17 @@ public class PostServiceImpl implements PostService{
         }
 
         return new PageResultDTO<>(postEntities, postMapper::entityToDto);
+    }
+
+    @Override
+    public List<PostResponseDTO> getNearPosts(Double longitude, Double latitude, double distance) {
+
+        Point location = geometryFactory.createPoint(new Coordinate(longitude, latitude));
+        List<Post> nearPosts = postRepository.findNear(location, distance);
+
+        return nearPosts.stream()
+                .map(postMapper::entityToDto)
+                .toList();
     }
 
     @Override
@@ -67,11 +82,11 @@ public class PostServiceImpl implements PostService{
         if (postRequestDTO.getScope() != null && !postRequestDTO.getScope().isBlank()) {
             post.changeScope(Scope.valueOf(postRequestDTO.getScope()));
         }
-        if (postRequestDTO.getLatitude() != null) {
-            post.changeLatitude(postRequestDTO.getLatitude());
-        }
-        if (postRequestDTO.getLongitude() != null) {
-            post.changeLongitude(postRequestDTO.getLongitude());
+        if (postRequestDTO.getLongitude() != null && postRequestDTO.getLatitude() != null ) {
+            Point location = geometryFactory.createPoint(
+                    new Coordinate(postRequestDTO.getLongitude(), postRequestDTO.getLatitude())
+            );
+            post.changeLocation(location);
         }
         
         return setFilesAndSave(postRequestDTO, post);
@@ -109,7 +124,8 @@ public class PostServiceImpl implements PostService{
         if (postRequestDTO.getFiles() != null && !postRequestDTO.getFiles().isEmpty()) {
             List<FileInfo> fileInfos = fileStoreUtil.storeFiles(postRequestDTO.getFiles());
     
-            List<File> fileEntities = fileInfos.stream().map(
+            List<File> fileEntities = fileInfos.stream()
+                    .map(
                             fileInfo -> File.builder()
                                     .post(post)
                                     .fileInfo(fileInfo)

@@ -7,10 +7,13 @@ import com.hyend.pingu.dto.PostResponseDTO;
 import com.hyend.pingu.entity.Post;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface PostService {
 
     PageResultDTO<PostResponseDTO, Post> getPosts(Long userId, PageRequestDTO pageRequestDTO);
+
+    List<PostResponseDTO> getNearPosts(Double longitude, Double latitude, double distance);
 
     Long register(PostRequestDTO postRequestDTO) throws IOException;
 

@@ -21,9 +21,9 @@ public class PostResponseDTO {
 
     private Long viewCount;
 
-    private Float latitude;
+    private Double longitude;
 
-    private Float longitude;
+    private Double latitude;
 
     private String scope;
 

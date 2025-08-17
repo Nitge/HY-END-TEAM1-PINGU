@@ -7,6 +7,8 @@ import com.hyend.pingu.entity.Post;
 import com.hyend.pingu.entity.User;
 import com.hyend.pingu.enumeration.Scope;
 import lombok.RequiredArgsConstructor;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.List;
 public class PostMapper {
 
     private final FileMapper fileMapper;
+    private final GeometryFactory geometryFactory;
 
     public Post dtoToEntity(PostRequestDTO postRequestDTO) {
 
@@ -23,23 +26,20 @@ public class PostMapper {
                 .id(postRequestDTO.getUserId())
                 .build();
 
-        float lat = postRequestDTO.getLatitude() == null ? 0 : postRequestDTO.getLatitude();
-        float lon = postRequestDTO.getLongitude() == null ? 0 : postRequestDTO.getLongitude();
+        double lon = postRequestDTO.getLongitude() == null ? 0 : postRequestDTO.getLongitude();
+        double lat = postRequestDTO.getLatitude() == null ? 0 : postRequestDTO.getLatitude();
         Scope scope = postRequestDTO.getScope() == null ? Scope.PUBLIC : Scope.valueOf(postRequestDTO.getScope());
-        
 
-        Post post = Post.builder()
+
+        return Post.builder()
                 .user(user)
                 .title(postRequestDTO.getTitle())
                 .content(postRequestDTO.getContent())
                 .likeCount(0)
                 .viewCount(0)
-                .latitude(lat)
-                .longitude(lon)
+                .location(geometryFactory.createPoint(new Coordinate(lon, lat)))
                 .scope(scope)
                 .build();
-
-        return post;
     }
 
     public PostResponseDTO entityToDto(Post post) {
@@ -47,7 +47,7 @@ public class PostMapper {
         List<FileResponseDTO> fileResponseDTOList = post
                 .getFiles()
                 .stream()
-                .map(fileEntity -> fileMapper.EntityToDto(fileEntity))
+                .map(fileMapper::EntityToDto)
                 .toList();
 
         return PostResponseDTO.builder()
@@ -57,8 +57,8 @@ public class PostMapper {
                 .content(post.getContent())
                 .likeCount(post.getLikeCount())
                 .viewCount(post.getViewCount())
-                .latitude(post.getLatitude())
-                .longitude(post.getLongitude())
+                .longitude(post.getLocation().getX())
+                .latitude(post.getLocation().getY())
                 .scope(post.getScope().toString())
                 .files(fileResponseDTOList)
                 .build();
