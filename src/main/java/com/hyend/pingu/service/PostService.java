@@ -17,4 +17,11 @@ public interface PostService {
     Long modify(PostRequestDTO postRequestDTO) throws IOException;
 
     Long delete(Long postId);
+
+    default PostResponseDTO getPost(Long postId) {
+        return getPost(postId, true);
+    }
+    
+    PostResponseDTO getPost(Long postId, boolean count);
+
 }

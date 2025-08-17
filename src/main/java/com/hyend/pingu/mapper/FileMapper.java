@@ -13,7 +13,7 @@ public class FileMapper {
 
         String uriString = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path("/files")
+                .path("/files/")
                 .path(file.getId().toString())
                 .toUriString();
 

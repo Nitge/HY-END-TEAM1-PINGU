@@ -39,6 +39,7 @@ public class Post extends BaseEntity{
     private Scope scope;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<File> files = new ArrayList<>();
 
     public void changeTitle(String title) {
@@ -60,5 +61,18 @@ public class Post extends BaseEntity{
             this.files.add(file);
         });
     }
+
+    public void changeLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+    
+    public void changeLongitude(float longitude) {
+        this.longitude = longitude;
+    }
+
+    public void increaseViewCount() {
+        this.viewCount++;
+    }
+    
 
 }
