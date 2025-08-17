@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,13 +23,24 @@ public class PostController {
     @GetMapping
     public ResponseEntity<PageResultDTO<PostResponseDTO, Post>> getPosts(
             @RequestParam(required = false) Long userId,
-            PageRequestDTO pageRequestDTO) {
+            @ModelAttribute PageRequestDTO pageRequestDTO) {
 
         return ResponseEntity.ok(postService.getPosts(userId, pageRequestDTO));
     }
 
+    @GetMapping("/near")
+    public ResponseEntity<List<PostResponseDTO>> getNearPosts(
+            @RequestParam Double longitude,
+            @RequestParam Double latitude,
+            @RequestParam Double distance) {
+
+        List<PostResponseDTO> nearPosts = postService.getNearPosts(longitude, latitude, distance);
+
+        return ResponseEntity.ok(nearPosts);
+    }
+
     @PostMapping
-    public ResponseEntity<Long> registerPost(PostRequestDTO postRequestDTO) throws IOException {
+    public ResponseEntity<Long> registerPost(@ModelAttribute PostRequestDTO postRequestDTO) throws IOException {
 
         Long registeredPostId = postService.register(postRequestDTO);
 
@@ -36,7 +48,7 @@ public class PostController {
     }
 
     @PutMapping
-    public ResponseEntity<Long> updatePost(PostRequestDTO postRequestDTO) throws IOException {
+    public ResponseEntity<Long> updatePost(@ModelAttribute PostRequestDTO postRequestDTO) throws IOException {
 
         Long updatedPostId = postService.modify(postRequestDTO);
 

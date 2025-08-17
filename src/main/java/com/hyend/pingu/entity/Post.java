@@ -3,6 +3,7 @@ package com.hyend.pingu.entity;
 import com.hyend.pingu.enumeration.Scope;
 import jakarta.persistence.*;
 import lombok.*;
+import org.locationtech.jts.geom.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +28,12 @@ public class Post extends BaseEntity{
 
     private String content;
 
-    private long likeCount;
+    private Long likeCount;
 
-    private long viewCount;
+    private Long viewCount;
 
-    private float latitude;
-
-    private float longitude;
+    @Column(columnDefinition = "POINT SRID 4326")
+    private Point location;
 
     @Enumerated(EnumType.STRING)
     private Scope scope;
@@ -62,17 +62,11 @@ public class Post extends BaseEntity{
         });
     }
 
-    public void changeLatitude(float latitude) {
-        this.latitude = latitude;
-    }
-    
-    public void changeLongitude(float longitude) {
-        this.longitude = longitude;
+    public void changeLocation(Point Location) {
+        this.location = Location;
     }
 
     public void increaseViewCount() {
         this.viewCount++;
     }
-    
-
 }

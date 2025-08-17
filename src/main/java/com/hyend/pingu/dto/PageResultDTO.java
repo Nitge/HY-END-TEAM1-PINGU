@@ -3,7 +3,6 @@ package com.hyend.pingu.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 import org.springframework.data.domain.Page;
 
 import java.util.List;
