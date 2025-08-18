@@ -35,8 +35,8 @@ public class PostMapper {
                 .user(user)
                 .title(postRequestDTO.getTitle())
                 .content(postRequestDTO.getContent())
-                .likeCount(0)
-                .viewCount(0)
+                .likeCount(0L)
+                .viewCount(0L)
                 .location(geometryFactory.createPoint(new Coordinate(lon, lat)))
                 .scope(scope)
                 .build();
