@@ -17,7 +17,7 @@ public interface PostService {
 
     Long register(PostRequestDTO postRequestDTO) throws IOException;
 
-    Long modify(PostRequestDTO postRequestDTO) throws IOException;
+    Long modify(Long postId, PostRequestDTO postRequestDTO) throws IOException;
 
     Long delete(Long postId);
 
