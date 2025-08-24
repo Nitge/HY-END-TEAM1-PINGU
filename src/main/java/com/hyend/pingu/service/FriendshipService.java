@@ -2,7 +2,7 @@ package com.hyend.pingu.service;
 
 import java.util.List;
 
-import com.hyend.pingu.dto.FriendshipDTO;
+import com.hyend.pingu.dto.FriendshipResponseDTO;
 
 
 public interface FriendshipService {
@@ -13,10 +13,10 @@ public interface FriendshipService {
 
     Long delete(Long requesterId, Long receiverId);
 
-    List<FriendshipDTO> findFriendsAccepted(Long userId);
+    List<FriendshipResponseDTO> findFriendsAccepted(Long userId);
 
-    List<FriendshipDTO> findReceivedRequests(Long userId);
+    List<FriendshipResponseDTO> findReceivedRequests(Long userId);
 
-    List<FriendshipDTO> findSentRequests(Long userId);
+    List<FriendshipResponseDTO> findSentRequests(Long userId);
 
 }

@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class FriendshipDTO {
+public class FriendshipResponseDTO {
 
     private Long id;
 

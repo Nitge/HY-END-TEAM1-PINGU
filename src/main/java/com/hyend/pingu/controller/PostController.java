@@ -7,6 +7,8 @@ import com.hyend.pingu.dto.PostResponseDTO;
 import com.hyend.pingu.entity.Post;
 import com.hyend.pingu.service.PostService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,17 +43,17 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<Long> registerPost(@ModelAttribute PostRequestDTO postRequestDTO) throws IOException {
-
+    
         Long registeredPostId = postService.register(postRequestDTO);
-
-        return ResponseEntity.ok(registeredPostId);
+    
+        return new ResponseEntity<>(registeredPostId, HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<Long> updatePost(@ModelAttribute PostRequestDTO postRequestDTO) throws IOException {
+    @PutMapping("/{postId}")
+    public ResponseEntity<Long> updatePost(@PathVariable Long postId,
+                                           @ModelAttribute PostRequestDTO postRequestDTO) throws IOException {
 
-        Long updatedPostId = postService.modify(postRequestDTO);
-
+        Long updatedPostId = postService.modify(postId, postRequestDTO);
         return ResponseEntity.ok(updatedPostId);
     }
 

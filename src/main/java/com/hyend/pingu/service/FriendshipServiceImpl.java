@@ -1,6 +1,6 @@
 package com.hyend.pingu.service;
 
-import com.hyend.pingu.dto.FriendshipDTO;
+import com.hyend.pingu.dto.FriendshipResponseDTO;
 import com.hyend.pingu.entity.Friendship;
 import com.hyend.pingu.entity.User;
 import com.hyend.pingu.enumeration.Status;
@@ -87,7 +87,7 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public List<FriendshipDTO> findFriendsAccepted(Long userId) {
+    public List<FriendshipResponseDTO> findFriendsAccepted(Long userId) {
         return friendshipRepository.findFriendsAccepted(userId)
                 .stream()
                 .map(friendshipMapper::entityToDto)
@@ -95,7 +95,7 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public List<FriendshipDTO> findReceivedRequests(Long userId) {
+    public List<FriendshipResponseDTO> findReceivedRequests(Long userId) {
         return friendshipRepository.findReceivedRequests(userId)
                 .stream()
                 .map(friendshipMapper::entityToDto)
@@ -103,7 +103,7 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public List<FriendshipDTO> findSentRequests(Long userId) {
+    public List<FriendshipResponseDTO> findSentRequests(Long userId) {
         return friendshipRepository.findSentRequests(userId)
                 .stream()
                 .map(friendshipMapper::entityToDto)
