@@ -1,10 +1,10 @@
 package com.hyend.pingu.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Builder
@@ -24,4 +24,7 @@ public class User extends BaseEntity {
     private String password;
 
     private String phoneNumber;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostFolder> postFolders = new ArrayList<>();
 }
