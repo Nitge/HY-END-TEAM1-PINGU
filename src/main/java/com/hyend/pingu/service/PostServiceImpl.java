@@ -68,9 +68,9 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public Long modify(PostRequestDTO postRequestDTO) throws IOException {
+    public Long modify(Long postId, PostRequestDTO postRequestDTO) throws IOException {
     
-        Post post = postRepository.findById(postRequestDTO.getPostId())
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("해당 ID를 가진 Entity가 없습니다."));
     
         if (postRequestDTO.getTitle() != null) {
