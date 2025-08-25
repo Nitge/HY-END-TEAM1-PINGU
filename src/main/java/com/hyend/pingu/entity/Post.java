@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @ToString
+@EqualsAndHashCode(of = "id")
 @Entity
 public class Post extends BaseEntity{
 
@@ -40,7 +41,7 @@ public class Post extends BaseEntity{
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<File> files = new ArrayList<>();
+    private final List<File> files = new ArrayList<>();
 
     public void changeTitle(String title) {
         this.title = title;
