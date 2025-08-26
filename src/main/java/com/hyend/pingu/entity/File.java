@@ -10,16 +10,17 @@ import lombok.*;
 @Getter
 @ToString
 @Entity
-@Table(name = "user")
-public class UserEntity extends BaseEntity {
+public class File extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
 
-    private String username;
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private Post post;
 
-    private String password;
-
-    private String phoneNumber;
+    @Embedded
+    private FileInfo fileInfo;
 }

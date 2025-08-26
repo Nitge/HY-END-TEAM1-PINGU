@@ -3,10 +3,12 @@ package com.hyend.pingu.mapper;
 import com.hyend.pingu.dto.FileResponseDTO;
 import com.hyend.pingu.dto.PostRequestDTO;
 import com.hyend.pingu.dto.PostResponseDTO;
-import com.hyend.pingu.entity.PostEntity;
-import com.hyend.pingu.entity.UserEntity;
+import com.hyend.pingu.entity.Post;
+import com.hyend.pingu.entity.User;
 import com.hyend.pingu.enumeration.Scope;
 import lombok.RequiredArgsConstructor;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,45 +18,48 @@ import java.util.List;
 public class PostMapper {
 
     private final FileMapper fileMapper;
+    private final GeometryFactory geometryFactory;
 
-    public PostEntity dtoToEntity(PostRequestDTO postRequestDTO) {
+    public Post dtoToEntity(PostRequestDTO postRequestDTO) {
 
-        UserEntity userEntity = UserEntity.builder()
-                .userId(postRequestDTO.getUserId())
+        User user = User.builder()
+                .id(postRequestDTO.getUserId())
                 .build();
 
-        PostEntity postEntity = PostEntity.builder()
-                .user(userEntity)
+        double lon = postRequestDTO.getLongitude() == null ? 0 : postRequestDTO.getLongitude();
+        double lat = postRequestDTO.getLatitude() == null ? 0 : postRequestDTO.getLatitude();
+        Scope scope = postRequestDTO.getScope() == null ? Scope.PUBLIC : Scope.valueOf(postRequestDTO.getScope());
+
+
+        return Post.builder()
+                .user(user)
                 .title(postRequestDTO.getTitle())
                 .content(postRequestDTO.getContent())
-                .likeCount(0)
-                .viewCount(0)
-                .latitude(postRequestDTO.getLatitude())
-                .longitude(postRequestDTO.getLongitude())
-                .scope(Scope.valueOf(postRequestDTO.getScope()))
+                .likeCount(0L)
+                .viewCount(0L)
+                .location(geometryFactory.createPoint(new Coordinate(lon, lat)))
+                .scope(scope)
                 .build();
-
-        return postEntity;
     }
 
-    public PostResponseDTO entityToDto(PostEntity postEntity) {
+    public PostResponseDTO entityToDto(Post post) {
 
-        List<FileResponseDTO> fileResponseDTOList = postEntity
+        List<FileResponseDTO> fileResponseDTOList = post
                 .getFiles()
                 .stream()
-                .map(fileEntity -> fileMapper.EntityToDto(fileEntity))
+                .map(fileMapper::EntityToDto)
                 .toList();
 
         return PostResponseDTO.builder()
-                .postId(postEntity.getPostId())
-                .userId(postEntity.getUser().getUserId())
-                .title(postEntity.getTitle())
-                .content(postEntity.getContent())
-                .likeCount(postEntity.getLikeCount())
-                .viewCount(postEntity.getViewCount())
-                .latitude(postEntity.getLatitude())
-                .longitude(postEntity.getLongitude())
-                .scope(postEntity.getScope().toString())
+                .postId(post.getId())
+                .userId(post.getUser().getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .likeCount(post.getLikeCount())
+                .viewCount(post.getViewCount())
+                .longitude(post.getLocation().getX())
+                .latitude(post.getLocation().getY())
+                .scope(post.getScope().toString())
                 .files(fileResponseDTOList)
                 .build();
     }

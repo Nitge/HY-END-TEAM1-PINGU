@@ -11,21 +11,24 @@ import lombok.*;
 @Getter
 @ToString
 @Entity
-@Table(name = "friendship")
-public class FriendshipEntity extends BaseEntity {
+public class Friendship extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long friendshipId;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "friend_id1")
-    private UserEntity friend1;
+    private User friend1;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "friend_id2")
-    private UserEntity friend2;
+    private User friend2;
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    public void changeStatus(Status status) {
+        this.status = status;
+}
 }

@@ -1,13 +1,15 @@
 package com.hyend.pingu.dto;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Getter
-@Builder
+@Setter
+@NoArgsConstructor
 public class PostRequestDTO {
 
     private Long postId;
@@ -22,9 +24,9 @@ public class PostRequestDTO {
 
     private Long viewCount;
 
-    private Float latitude;
+    private Double longitude;
 
-    private Float longitude;
+    private Double latitude;
 
     private String scope;
 

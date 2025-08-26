@@ -1,20 +1,30 @@
 package com.hyend.pingu.service;
 
+import com.hyend.pingu.dto.PageRequestDTO;
+import com.hyend.pingu.dto.PageResultDTO;
 import com.hyend.pingu.dto.PostRequestDTO;
 import com.hyend.pingu.dto.PostResponseDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.hyend.pingu.entity.Post;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface PostService {
 
-    public Page<PostResponseDTO> getPosts(Pageable pageable);
+    PageResultDTO<PostResponseDTO, Post> getPosts(Long userId, PageRequestDTO pageRequestDTO);
 
-    public Long register(PostRequestDTO postRequestDTO) throws IOException;
+    List<PostResponseDTO> getNearPosts(Double longitude, Double latitude, double distance);
 
-    public Long modify(PostRequestDTO postRequestDTO) throws IOException;
+    Long register(PostRequestDTO postRequestDTO) throws IOException;
 
-    public Long delete(Long postId);
+    Long modify(Long postId, PostRequestDTO postRequestDTO) throws IOException;
+
+    Long delete(Long postId);
+
+    default PostResponseDTO getPost(Long postId) {
+        return getPost(postId, true);
+    }
+    
+    PostResponseDTO getPost(Long postId, boolean count);
 
 }

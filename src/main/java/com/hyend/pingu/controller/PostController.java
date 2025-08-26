@@ -1,55 +1,76 @@
 package com.hyend.pingu.controller;
 
+import com.hyend.pingu.dto.PageRequestDTO;
+import com.hyend.pingu.dto.PageResultDTO;
 import com.hyend.pingu.dto.PostRequestDTO;
 import com.hyend.pingu.dto.PostResponseDTO;
-import com.hyend.pingu.service.FileService;
+import com.hyend.pingu.entity.Post;
 import com.hyend.pingu.service.PostService;
-import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
+@RequestMapping("/posts")
 public class PostController {
 
     private final PostService postService;
 
+    @GetMapping
+    public ResponseEntity<PageResultDTO<PostResponseDTO, Post>> getPosts(
+            @RequestParam(required = false) Long userId,
+            @ModelAttribute PageRequestDTO pageRequestDTO) {
 
-    // TODO: userId로 조회 필요
-    @GetMapping("/post")
-    public ResponseEntity<Page<PostResponseDTO>> getPosts(
-            @PageableDefault(size = 10, page = 0, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ResponseEntity.ok(postService.getPosts(pageable));
+        return ResponseEntity.ok(postService.getPosts(userId, pageRequestDTO));
     }
 
+    @GetMapping("/near")
+    public ResponseEntity<List<PostResponseDTO>> getNearPosts(
+            @RequestParam Double longitude,
+            @RequestParam Double latitude,
+            @RequestParam Double distance) {
 
-    @PostMapping("/post")
+        List<PostResponseDTO> nearPosts = postService.getNearPosts(longitude, latitude, distance);
+
+        return ResponseEntity.ok(nearPosts);
+    }
+
+    @PostMapping
     public ResponseEntity<Long> registerPost(@ModelAttribute PostRequestDTO postRequestDTO) throws IOException {
-
+    
         Long registeredPostId = postService.register(postRequestDTO);
-
-        return ResponseEntity.ok(registeredPostId);
+    
+        return new ResponseEntity<>(registeredPostId, HttpStatus.CREATED);
     }
 
-    @PutMapping("/post")
-    public ResponseEntity<Long> updatePost(@ModelAttribute PostRequestDTO postRequestDTO) throws IOException {
+    @PutMapping("/{postId}")
+    public ResponseEntity<Long> updatePost(@PathVariable Long postId,
+                                           @ModelAttribute PostRequestDTO postRequestDTO) throws IOException {
 
-        Long updatedPostId = postService.modify(postRequestDTO);
-
+        Long updatedPostId = postService.modify(postId, postRequestDTO);
         return ResponseEntity.ok(updatedPostId);
     }
 
-    @DeleteMapping("/post{postId}")
+    @DeleteMapping("/{postId}")
     public ResponseEntity<Long> deletePost(@PathVariable Long postId) {
 
         Long deletedPostId = postService.delete(postId);
 
         return ResponseEntity.ok(deletedPostId);
+    }
+
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostResponseDTO> getPost(@PathVariable Long postId,
+                                                   @RequestParam(defaultValue = "true") boolean count) {
+    
+        PostResponseDTO postResponseDTO = postService.getPost(postId, count);
+    
+        return ResponseEntity.ok(postResponseDTO);
     }
 }

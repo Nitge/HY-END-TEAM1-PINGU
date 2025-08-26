@@ -3,6 +3,7 @@ package com.hyend.pingu.entity;
 import com.hyend.pingu.enumeration.Scope;
 import jakarta.persistence.*;
 import lombok.*;
+import org.locationtech.jts.geom.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,35 +14,34 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @ToString
+@EqualsAndHashCode(of = "id")
 @Entity
-@Table(name = "post")
-public class PostEntity extends BaseEntity{
+public class Post extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postId;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    private User user;
 
     private String title;
 
     private String content;
 
-    private long likeCount;
+    private Long likeCount;
 
-    private long viewCount;
+    private Long viewCount;
 
-    private float latitude;
-
-    private float longitude;
+    @Column(columnDefinition = "POINT SRID 4326")
+    private Point location;
 
     @Enumerated(EnumType.STRING)
     private Scope scope;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FileEntity> files = new ArrayList<>();
+    @Builder.Default
+    private final List<File> files = new ArrayList<>();
 
     public void changeTitle(String title) {
         this.title = title;
@@ -55,12 +55,19 @@ public class PostEntity extends BaseEntity{
         this.scope = scope;
     }
 
-    public void changeFiles(List<FileEntity> files) {
+    public void changeFiles(List<File> files) {
         this.files.clear();
-        files.forEach(fileEntity -> {
-            fileEntity.setPost(this);
-            this.files.add(fileEntity);
+        files.forEach(file -> {
+            file.setPost(this);
+            this.files.add(file);
         });
     }
 
+    public void changeLocation(Point Location) {
+        this.location = Location;
+    }
+
+    public void increaseViewCount() {
+        this.viewCount++;
+    }
 }
