@@ -106,7 +106,7 @@ public class PostServiceImpl implements PostService{
      */
     @Override
     public Long modify(Long postId, PostRequestDTO postRequestDTO) throws IOException {
-        // 1. postId로 DB에서 기존 Post 엔티티를 조회합니다. 없으면 예외를 발생시킵니다.
+        // 1. postId로 DB 에서 기존 Post 엔티티를 조회합니다. 없으면 예외를 발생시킵니다.
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("해당 ID를 가진 Entity가 없습니다."));
 
@@ -143,7 +143,7 @@ public class PostServiceImpl implements PostService{
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("해당 ID를 가진 Entity가 없습니다."));
 
-        // 2. 'Soft Delete'를 위해 게시글의 상태(scope)를 DELETED로 변경합니다.
+        // 2. 'Soft Delete' 를 위해 게시글의 상태(scope)를 DELETED로 변경합니다.
         //    이렇게 하면 데이터를 복구하거나 관리자가 확인할 수 있는 장점이 있습니다.
         post.changeScope(Scope.DELETED);
         // 3. 변경된 상태를 DB에 저장합니다.
