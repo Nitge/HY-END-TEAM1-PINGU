@@ -30,8 +30,8 @@ public class PostFolderServiceImpl implements PostFolderService {
      */
     @Override
     public List<PostFolderDTO> getPostFoldersByUser(Long userId) {
-        // 1. Repository 메소드에 전달하기 위해 userId만으로 User 객체를 생성합니다.
-        //    JPA는 연관관계 매핑 시 ID만으로도 객체를 인식할 수 있습니다.
+        // 1. Repository 메소드에 전달하기 위해 userId 만으로 User 객체를 생성합니다.
+        //    JPA는 연관관계 매핑 시 ID 만으로도 객체를 인식할 수 있습니다.
         User user = User.builder()
                 .id(userId)
                 .build();

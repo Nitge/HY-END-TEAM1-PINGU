@@ -56,7 +56,7 @@ public class FriendshipController {
     }
 
     /**
-     * 친구 관계를 삭제(차단 또는 관계 끊기)합니다.
+     * 친구 관계를 삭제합니다.
      * @param requesterId 요청을 보냈던 사용자의 ID.
      * @param receiverId 요청을 받았던 사용자의 ID.
      * @return 상태가 변경된 친구 관계 데이터의 ID를 반환합니다.

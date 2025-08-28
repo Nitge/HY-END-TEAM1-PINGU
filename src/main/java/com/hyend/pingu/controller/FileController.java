@@ -37,9 +37,9 @@ public class FileController {
     public ResponseEntity<Resource> getFile(@PathVariable Long fileId) throws FileNotFoundException, MalformedURLException {
         // 1. FileService를 호출하여 파일 ID에 해당하는 실제 파일의 전체 경로(Path)를 가져옵니다.
         Path path = fileService.getFile(fileId);
-        // 2. 경로에서 파일 이름(예: "abc-123.jpg")을 추출합니다.
+        // 2. 경로에서 파일 이름을 추출합니다.
         String fileName = path.getFileName().toString();
-        // 3. 파일 이름에서 마지막 '.' 이후의 문자열, 즉 확장자(예: "jpg")를 추출합니다.
+        // 3. 파일 이름에서 마지막 '.' 이후의 문자열, 즉 확장자를 추출합니다.
         String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
         // 4. 파일 경로(Path)를 URI로 변환하고, 이를 기반으로 UrlResource 객체를 생성합니다.
         //    UrlResource는 파일 시스템의 파일을 URL처럼 다룰 수 있게 해주는 Spring의 리소스 클래스입니다.

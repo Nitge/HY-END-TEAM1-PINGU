@@ -47,7 +47,7 @@ public class PostFolderController {
     }
 
     /**
-     * 기존 게시글 폴더의 정보를 수정합니다. (예: 이름 변경, 폴더 내 게시글 변경)
+     * 기존 게시글 폴더의 정보를 수정합니다.
      * @param postFolderDTO 수정할 폴더의 ID와 변경할 내용이 담긴 DTO.
      * @return 수정된 폴더의 ID를 반환합니다.
      */

@@ -50,7 +50,7 @@ public class FriendshipServiceImpl implements FriendshipService {
         if (friendshipRepository.findFriendshipWithStatus(requesterId, receiverId, Status.ACCEPTED).isPresent()) {
             throw new RuntimeException("이미 친구 상태입니다.");
         }
-        // [예외 처리 4] 상대방이 나에게 먼저 친구 요청을 보낸 경우 (수락을 유도)
+        // [예외 처리 4] 상대방이 나에게 먼저 친구 요청을 보낸 경우 (수락 유도)
         if (friendshipRepository.findFriendshipWithStatus(receiverId, requesterId, Status.REQUESTING).isPresent()) {
             throw new RuntimeException("상대가 먼저 친구 요청을 보냈습니다.");
         }
@@ -95,7 +95,7 @@ public class FriendshipServiceImpl implements FriendshipService {
         // 1. 요청자와 수신자 ID로 'REQUESTING' 상태인 친구 관계를 조회합니다. 없으면 예외 발생.
         Friendship friendship = friendshipRepository.findFriendshipWithStatus(requesterId, receiverId, Status.REQUESTING)
                 .orElseThrow(() -> new RuntimeException("친구 추가 요청이 없습니다"));
-        // 2. 상태를 'ACCEPTED'로 변경합니다.
+        // 2. 상태를 'ACCEPTED' 로 변경합니다.
         friendship.changeStatus(Status.ACCEPTED);
         // 3. 변경된 상태를 DB에 저장합니다.
         friendshipRepository.save(friendship);
@@ -113,7 +113,7 @@ public class FriendshipServiceImpl implements FriendshipService {
         // 1. 두 사용자 ID로 'ACCEPTED' 상태인 친구 관계를 조회합니다. 없으면 예외 발생.
         Friendship friendship = friendshipRepository.findFriendshipWithStatus(requesterId, receiverId, Status.ACCEPTED)
                 .orElseThrow(() -> new RuntimeException("친구 상태가 아닙니다."));
-        // 2. 상태를 'DELETED'로 변경합니다.
+        // 2. 상태를 'DELETED' 로 변경합니다.
         friendship.changeStatus(Status.DELETED);
         // 3. 변경된 상태를 DB에 저장합니다.
         friendshipRepository.save(friendship);

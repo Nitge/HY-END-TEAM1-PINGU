@@ -98,7 +98,7 @@ public class PostController {
     }
 
     /**
-     * 특정 게시글을 삭제합니다. (논리적 삭제: 상태를 DELETED로 변경)
+     * 특정 게시글을 삭제합니다. (상태를 DELETED로 변경)
      * @param postId URL 경로에 포함된, 삭제할 게시글의 ID입니다.
      * @return 삭제 처리된 게시글의 ID를 반환합니다.
      */
