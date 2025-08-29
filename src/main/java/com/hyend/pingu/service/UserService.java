@@ -12,4 +12,6 @@ public interface UserService {
     void delete(Long userId);
 
     PageResultDTO<UserDTO, User> getList(PageRequestDTO requestDTO);
+
+    User login(String username, String password);
 }
