@@ -95,4 +95,10 @@ public class UserServiceImpl implements UserService {
         // 4. 최종적으로 페이징된 엔티티 결과와 변환 함수를 PageResultDTO 생성자에 넘겨 결과를 반환합니다.
         return new PageResultDTO<>(result, fn);
     }
+
+    @Override
+    public User login(String username, String password) {
+        return userRepository.findByUsernameAndPassword(username, password)
+                .orElseThrow(() -> new RuntimeException("ID or password does not match"));
+    }
 }
