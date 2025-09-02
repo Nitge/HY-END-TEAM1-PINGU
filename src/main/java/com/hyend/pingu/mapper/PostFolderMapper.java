@@ -14,20 +14,12 @@ public class PostFolderMapper {
                 .id(entity.getId())
                 .name(entity.getName())
                 .userId(entity.getUser().getId())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .postIds(entity.getPosts().stream()
                         .map(Post::getId).toList())
                 .build();
 
         return postFolderDTO;
     }
-
-    /*
-    public PostFolder DtoToEntity(PostFolderDTO dto) {
-        PostFolder.builder()
-                .id(dto.getId())
-                .name(dto.getName())
-                .user()
-    }
-     */
-
 }

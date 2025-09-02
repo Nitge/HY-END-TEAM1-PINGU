@@ -6,6 +6,8 @@ import com.hyend.pingu.enumeration.Status;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Getter
 public class FriendshipResponseDTO {
@@ -17,4 +19,9 @@ public class FriendshipResponseDTO {
     private UserDTO friend2;
 
     private Status status;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 }
+

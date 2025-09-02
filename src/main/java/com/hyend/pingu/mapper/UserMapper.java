@@ -22,8 +22,8 @@ public class UserMapper {
                 .username(entity.getName())
                 .password(entity.getPassword())
                 .phoneNumber(entity.getPhoneNumber())
-                .regDate(entity.getCreatedAt())
-                .modDate(entity.getUpdatedAt())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 }

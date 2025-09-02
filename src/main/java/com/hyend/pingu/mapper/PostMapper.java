@@ -60,6 +60,8 @@ public class PostMapper {
                 .longitude(post.getLocation().getX())
                 .latitude(post.getLocation().getY())
                 .scope(post.getScope().toString())
+                .createdAt(post.getCreatedAt())
+                .updatedAt(post.getUpdatedAt())
                 .files(fileResponseDTOList)
                 .build();
     }

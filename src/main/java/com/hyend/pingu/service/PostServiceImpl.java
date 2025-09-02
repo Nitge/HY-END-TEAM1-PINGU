@@ -182,8 +182,10 @@ public class PostServiceImpl implements PostService{
      * @throws IOException 파일 저장 중 발생할 수 있는 예외
      */
     private Long setFilesAndSave(PostRequestDTO postRequestDTO, Post post) throws IOException {
+
         // 1. 요청 DTO에 파일이 존재하는지 확인합니다.
         if (postRequestDTO.getFiles() != null && !postRequestDTO.getFiles().isEmpty()) {
+
             // 2. FileStoreUtil을 사용해 실제 파일들을 서버의 특정 위치에 저장하고, 저장된 파일 정보를(FileInfo) 받아옵니다.
             List<FileInfo> fileInfos = fileStoreUtil.storeFiles(postRequestDTO.getFiles());
 

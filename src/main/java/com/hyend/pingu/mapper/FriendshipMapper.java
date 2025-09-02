@@ -19,6 +19,8 @@ public class FriendshipMapper {
                 .friend1(userMapper.entityToDto(friendship.getFriend1()))
                 .friend2(userMapper.entityToDto(friendship.getFriend2()))
                 .status(friendship.getStatus())
+                .createdAt(friendship.getCreatedAt())
+                .updatedAt(friendship.getUpdatedAt())
                 .build();
     }
 

@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public PageResultDTO<UserDTO, User> getList(PageRequestDTO requestDTO) {
         // 1. PageRequestDTO를 사용하여 Pageable 객체를 생성합니다. 정렬 기준은 'userId'의 내림차순입니다.
-        Pageable pageable = requestDTO.getPageable(Sort.by("userId").descending());
+        Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
         // 2. Repository의 findAll 메소드에 Pageable 객체를 전달하여 페이징된 결과를 받습니다.
         Page<User> result = userRepository.findAll(pageable);
         // 3. Page<User>의 각 User 엔티티를 UserDTO로 변환할 함수(fn)를 정의합니다.

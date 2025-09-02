@@ -38,7 +38,7 @@ public class FileServiceImpl implements FileService {
         // 3. FileInfo에 저장된 폴더 경로(getStorePath)와 실제 저장된 파일명(getStoreFileName)을 조합하여
         //    파일의 전체 경로를 나타내는 Path 객체를 생성하고 반환합니다.
         //    (예: "/path/to/files/" + "abc-123.jpg" -> "/path/to/files/abc-123.jpg")
-        return Paths.get(fileInfo.getStorePath() + fileInfo.getStoreFileName());
+        return Paths.get(fileInfo.getStorePath() + "/" + fileInfo.getStoreFileName());
     }
 
 }

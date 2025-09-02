@@ -40,7 +40,6 @@ public class Post extends BaseEntity{
     private Scope scope;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
     private final List<File> files = new ArrayList<>();
 
     public void changeTitle(String title) {

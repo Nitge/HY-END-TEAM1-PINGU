@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @ToString
 @Entity
-public class PostFolder {
+public class PostFolder extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

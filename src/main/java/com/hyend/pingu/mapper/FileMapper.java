@@ -23,6 +23,8 @@ public class FileMapper {
                 .url(uriString)
                 .fileSize(file.getFileInfo().getSize())
                 .contentType(ContentType.fromExtension(file.getFileInfo().getExt()))
+                .createdAt(file.getCreatedAt())
+                .updatedAt(file.getUpdatedAt())
                 .build();
     }
 }

@@ -3,6 +3,7 @@ package com.hyend.pingu.dto;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -16,4 +17,8 @@ public class PostFolderDTO {
     private Long userId;
 
     private List<Long> postIds;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 }

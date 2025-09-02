@@ -3,6 +3,7 @@ package com.hyend.pingu.dto;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -26,6 +27,10 @@ public class PostResponseDTO {
     private Double latitude;
 
     private String scope;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 
     private List<FileResponseDTO> files;
 

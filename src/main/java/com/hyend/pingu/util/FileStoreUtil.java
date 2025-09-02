@@ -24,7 +24,7 @@ public class FileStoreUtil {
         String ext = extractExt(originalFileName);
         long size = file.getSize();
 
-        file.transferTo(new File(storePath + storeFileName));
+        file.transferTo(new File(storePath + "/" + storeFileName));
 
         return new FileInfo(storePath, storeFileName, originalFileName, ext, size);
     }
