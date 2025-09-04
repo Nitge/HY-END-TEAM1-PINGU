@@ -19,7 +19,7 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDTO loginRequestDTO,
+    public ResponseEntity<Long> login(@RequestBody LoginRequestDTO loginRequestDTO,
                                         HttpServletRequest request) {
         User user = userService.login(loginRequestDTO.getUsername(), loginRequestDTO.getPassword());
 
@@ -27,9 +27,9 @@ public class AuthController {
             HttpSession session = request.getSession();
             session.setAttribute("user", user.getId());
             session.setMaxInactiveInterval(1800);
-            return ResponseEntity.ok("login success");
+            return ResponseEntity.ok(user.getId());
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("login failed");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(-1L);
         }
 
     }
